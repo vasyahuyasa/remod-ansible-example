@@ -1,0 +1,19 @@
+- hosts: rbservers
+  tasks:
+    - name: Remod
+      include_role:
+        name: remod-sauerbraten-src
+      tags:
+        - install
+    - name: Start remod
+      include_role:
+        name: remod-sauerbraten-src
+        tasks_from: remod_start
+      tags:
+        - start
+    - name: Stop remod
+      include_role:
+        name: remod-sauerbraten-src
+        tasks_from: remod_stop
+      tags:
+        - stop

@@ -1,0 +1,25 @@
+- hosts: sauerauth
+  tasks:
+    - name: Sauerbraten master server
+      include_role:
+        name: sauerbraten-master-src
+      tags:
+        - install
+    - name: Start master
+      include_role:
+        name: sauerbraten-master-src
+        tasks_from: master_start
+      tags:
+        - start
+    - name: Stop master
+      include_role:
+        name: sauerbraten-master-src
+        tasks_from: master_stop
+      tags:
+        - stop
+    - name: Reload master
+      include_role:
+        name: sauerbraten-master-src
+        tasks_from: master_reload
+      tags:
+        - reload

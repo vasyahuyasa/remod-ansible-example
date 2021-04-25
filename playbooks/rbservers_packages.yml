@@ -1,0 +1,17 @@
+- hosts: rbservers
+  tasks:
+    - name: Update packages repo
+      apt:
+        update_cache: yes
+    - name: Packages
+      apt:
+        pkg:
+          - gcc
+          - golang
+          - git
+          - make
+          - autoconf
+          - automake
+          - libtool
+          - libz-dev
+          - mc

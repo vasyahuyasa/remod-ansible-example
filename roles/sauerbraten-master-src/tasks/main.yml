@@ -1,0 +1,46 @@
+- name: "SVN checkout {{sauerbraten_revision}}"
+  subversion:
+    repo: "{{sauerbraten_svn_repo}}"
+    dest: "{{sauerbraten_build_root}}"
+    revision: "{{sauerbraten_revision}}"
+  tags:
+    - install
+- name: Build sauerbraten master
+  make:
+    chdir: "{{sauerbraten_build_root}}/src"
+    target: master
+  tags:
+    - install
+- name: "Create directory structure"
+  file: 
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{sauerbraten_install_root}}"
+  tags:
+    - install
+- name: Install binary
+  copy:
+    src: "{{sauerbraten_build_root}}/src/sauer_master"
+    dest: "{{sauerbraten_install_root}}/sauer_master"
+    remote_src: yes
+  tags:
+    - install
+- name: Make master bin excutable
+  file:
+    dest: "{{sauerbraten_install_root}}/sauer_master"
+    mode: a+x
+  tags:
+    - install
+- name: Master config
+  template:
+    src: master.cfg.j2
+    dest: "{{sauerbraten_install_root}}/master.cfg"
+  tags:
+    - install
+- name: Install systemd service file to server
+  template:
+    src: sauerbraten-master.service.j2
+    dest: /etc/systemd/system/sauerbraten-master.service
+  tags:
+    - install

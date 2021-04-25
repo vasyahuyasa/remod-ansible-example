@@ -1,0 +1,11 @@
+[Unit]
+Description=Sauerbraten master server
+After=network.target
+
+[Service]
+WorkingDirectory={{sauerbraten_install_root}}
+ExecStart={{sauerbraten_bin}} "" {{sauerbraten_config_port}}
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

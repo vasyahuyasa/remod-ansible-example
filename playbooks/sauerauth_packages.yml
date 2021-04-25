@@ -1,0 +1,13 @@
+- hosts: sauerauth
+  tasks:
+    - name: Update packages repo
+      apt:
+        update_cache: yes
+    - name: Packages
+      apt:
+        pkg:
+          - gcc
+          - libz-dev
+          - subversion
+          - make
+          - mc

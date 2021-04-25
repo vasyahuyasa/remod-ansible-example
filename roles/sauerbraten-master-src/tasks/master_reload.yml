@@ -1,0 +1,8 @@
+- name: Reload master server
+  systemd:
+    name: sauerbraten-master.service
+    daemon_reload: yes
+    state: reloaded
+    enabled: yes
+  tags:
+    - reload

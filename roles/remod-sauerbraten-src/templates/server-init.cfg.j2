@@ -1,0 +1,334 @@
+// ******************************
+// MAIN SERVER CONFIGURATION CONFIG
+// ******************************
+
+// DONT FORGET TO EDIT scripts/permissions.cfg !!!
+// Set log output to file, if empty write logs to console
+// setlogfile "server.log"
+setlogfile ""
+
+// Show local time
+echo ""
+echo "*********************************************"
+echo (format "Start server %1" (systimef "%c"))
+echo "*********************************************"
+
+
+// -------------------------------------
+// SERVER SCRIPTS
+// -------------------------------------
+
+// Core scripts, do not delete these lines until you know what are you doing
+exec "scripts/stdlib.cfg"
+exec "scripts/messages.cfg"
+exec "scripts/permissions.cfg"
+exec "scripts/db.cfg"
+
+
+
+// -------------------------------------
+// DATABASES CONFIGURATION
+// -------------------------------------
+
+// Register default database for the server. It is used for the most scripts which require database connection.
+// If you don't want database support, just comment out these lines.
+db_register "sqlite3" "remod_sqlite3.db"  
+db_init
+
+// You can use MySQL/MariaDB as default database as well 
+//db_register "mysql" "remod:password@127.0.0.1:3306/remod" 
+//db_init
+
+// You can register other databases for some scripts
+// db_register "sqlite3" "second.db" "seconddb_name"
+// db_init "seconddb_name" 0
+
+
+// -------------------------------------
+// SERVER CONFIGURATION
+// -------------------------------------
+
+// Unique server ident, required by some modules if you are using same database for multyply servers
+serverident = "{{remod_config_serverident}}"
+
+// Server description and server's name
+serverdesc "{{remod_config_serverdesc}}"
+
+// Message of the day
+servermotd  "{{remod_config_servermotd}}"
+
+// Max number of connected clients
+maxclients {{remod_config_maxclients}}
+
+// Max amount of bots 
+serverbotlimit {{remod_config_serverbotlimit}}
+
+// Accessibility of server:
+// 0 - private server
+// 1 - public server
+// 2 - coop server
+// 3 - auth server, mastermode 3 disabled for non admins
+publicserver {{remod_config_publicserver}}
+
+// Update master server with your one (you want to see your server in the server browser) 
+updatemaster {{remod_config_updatemaster}}
+
+// optional specific IP for server to use
+// serverip N.N.N.N
+
+// Server port. 
+// Sauerbraten uses serverport and serverport+1 so don't forget to update your firewall/NAT settings (by default: 28785 - TCP, 28786 - UDP)
+serverport {{remod_config_serverport}}
+
+// password required to connect to the server
+// generally unnecessary unless you really don't want anyone connecting to your server
+// using the serverauth option allows people with an appropriate local authkey to connect regardless
+// serverpass ""
+
+// Password to become admin
+adminpass {{remod_config_adminpass}}
+
+// Password for gain master
+masterpass {{remod_config_masterpass}}
+
+// domain to use for local authkeys to the server so people can authenticate by "auth domain_here"
+// must be a non-empty string that should be unique to your server to prevent clashes with other servers
+serverauth "{{remod_config_serverauth}}"
+
+// controls whether admin privs are necessary to record a demo
+// when 1 requires admin (default)
+// when 0 only requires master
+// restrictdemos 1
+
+// maximum number of demos the server will store
+maxdemos {{remod_config_maxdemos}}
+
+// maximum size a demo is allowed to grow to in megabytes
+// maxdemosize 16
+
+// controls whether admin privs are necessary to pause a game
+// when 1 requires admin (default)
+// when 0 only requires master
+restrictpausegame {{remod_config_restrictpausegame}}
+
+// controls whether admin privs are necessary to change gamespeed
+// when 1 requires admin (default)
+// when 0 only requires master
+restrictgamespeed {{remod_config_restrictgamespeed}}
+
+// whether or not to allow players to vote on maps not in the rotation
+// when 1 requires master
+// when 2 requires admin
+// when 0 allows any votes (default)
+lockmaprotation {{remod_config_lockmaprotation}}
+
+// Toggles whether teamkilling the flag runner in CTF modes should disallow the teamkiller from stealing the flag
+ctftkpenalty {{remod_config_ctftkpenalty}}
+
+// save and load permanent bans here
+banfile "permbans.cfg"
+
+// Rcon configuration (allows you connect remotely to the server and execute any cubescript on it)
+rconproto {{remod_config_rconproto}} // Rcon protocol 0 - udp, 1 - tcp
+// rconip "" // Sets the IP the server should bind/listen. This is only useful if your server is running on a host with multiple interfaces.
+rconenable {{remod_config_rconenable}}
+rconport {{remod_config_rconport}}
+rconpass "{{remod_config_rconpass}}"
+
+// GeoIp database
+geodb "GeoLite2-Country.mmdb"
+
+// whether or not to enable server-side demo recording automatically for every match
+// when 1 will always record a server-side demo for every match
+// when 0 will only record a demo for a match when requested
+autorecorddemo 1
+
+// save demos to disc
+savedemo 1
+
+// folder for save demos
+demodir "{{remod_config_demodir}}"
+
+// custom demo name, if not set then demo name is unix timestamp
+demoname = [ result (concatword (systimef "%Y_%m_%d_%H_%M") - (modetostr (getmode)) - (getmap)) ]
+
+// folder for save and load maps (coopedit mode via #savemap)
+mapdir "maps"
+
+// intermission time (default: 10000 millisec)
+imissiontime 10000
+
+// time limit for every round (0 - don't change, in game #gtime)
+roundtime 0
+
+// whether or not teams should persist across matches and avoid autobalancing
+// when 1 teams persist across matches and don't autobalance
+// when 0 teams automatically balance at the beginning of a match (default)
+persistteams {{remod_config_persistteams}}
+
+// character before player command
+commandchar "#"
+
+// show message on banned client connect
+ipbanmsg 1
+
+// delay in seconds before unpausing
+resumedelay 3
+
+// whether or not overtime is enabled for matches
+// when 1 enables overtime such that the match will keep going so long as scores are tied
+// when 0 the match will always end after a fixed time whether or not anyone wins (default)
+overtime {{remod_config_overtime}}
+
+// whether or not blue armour is enabled in regen capture
+// when 1 players spawn with blue armour in regen capture as in other modes (default)
+// when 0 players spawn without any armour in regen capture
+regenbluearmour 1
+
+// IRC bot configuration
+verbose 1 //if verbose >= 2, relay game messages to irc
+ircfilter 1 //0: copy string
+// ircaddrelay gamesurge irc.gamesurge.net 6667 rb10
+// ircauthcmd gamesurge "authserv auth remodsrv k7JDAY643"
+// ircaddchan gamesurge "#rb-servers"
+// irccommandchar # // normally you can execute irc commands using bot's name i.e. rb10, help . with irccommandchar variable you can access the bot without its name, i.e. #help
+// ircpingdelay 60
+
+// Map rotation configuration
+
+// Maps for ffa and other not team modes
+ffamaps = [
+aard3c abyss academy access albatross akaritori akimiski alithia alloy antel anubis aod aqueducts arbana asenatra asthma averas
+awoken bvdm_01 carbide cartel castle_trap catacombs cavefire church51 clash collusion colony complex conflict corruption crypta curvedm curvy_castle
+darkdeath deathtek depot dirtndust dispute DM_BS1 dock dopamine douze duel5 duel7 duel8 dune elegy exist exo fallen
+fanatic_quake fdm6 ferguson force frag-lab frag2 fragplaza frostbyte frozen fubuki fury ghetto gorge gothic-df guacamole gubo hades
+hashi hator haze hdm3 headroom helligsted hektik hillfort hog2 horus idyll3 imhotep industry infernal injustice insipid island
+janela justice kalking1 kastro katrez_d kffa killfactory kmap5 konkuri-to ksauer1 legacy legazzo lost_soul lost_world lostinspace maple masdm
+mbt2 mbt9 mbt10 memento memoria metl2 metl3 metl4 mood moonlite neondevastation neonpanic nessus nmp8 nmp10 nucleus oasis
+oddworld ognjen ogrosupply oldschool orbe orion osiris ot outpost paradigm pariah park pgdm phosgene phrantic pitch_black powerplant
+purgatory refuge renegade rm1 rm5 roughinery ruby ruine saffier sandstorm sauerowalk sauerstruck sdm1 shadowed shindou shinmei1 shiva
+simplicity skrdm1 skycastle-r slingshot souls spcr2 stahlbox stemple stronghold suburb suisei tartech teahupoo tejen thetowers thor torment
+toxicity tumwalk turbine turmoil unworld unworld2 ventania waltz wake5 wdcd zamak zavial zdm2 ztn
+]
+
+// Maps for capture modes
+capturemaps = [
+aastha abbey access akimiski akroseum alithia anubis aod arabic asenatra asgard asteroids averas bklyn c_egypt c_lone c_valley
+campo capture_night caribbean casa collide collusion core_refuge core_transfer corruption croma cwcastle damnation destiny dirtndust disc disruption donya
+duomo dust2 earthstation eris eternal_valley evilness face-capture fallen fb_capture fc3 fc4 fc5 forge fragnostic frostbyte fusion genesis
+ghetto gorge gothic-df hades hallo harbor haste hidden imhotep infamy infernal killcore3 kopenhagen laucin lostinspace luna mbt12
+mc-lab meltdown2 mercury metro monastery nevil_c new_energy nitro nmp4 nmp9 nucleus ogrosupply overdrive ow pandora paradigm pariah
+ph-capture pul1ctf reissen relic risk river_c river_keep ruby ruebli rust serenity skycastle-r snapper_rocks spcr stadium stronghold subterra
+suburb surge tempest tortuga triforts turbulence turmoil twinforts urban_c valhalla venice waltz xenon zamak
+]
+
+// Maps for ctf, protect and and collect modes
+ctfmaps = [
+aastha abbey akimiski akroseum arbana asgard authentic autumn bad_moon berlin_wall bklyn breakout bt_falls campo capture_night casa catch22
+collide core_refuge core_transfer croma ctf_suite daemex damnation desecration destiny disc disruption divine duomo dust2 earthsea earthstation enigma
+eris eternal_valley europium evilness face-capture fire_keep flagstone forge forgotten fortress fragnostic fusion garden hallo harbor haste hidden
+idris infamy kiryu kopenhagen l_ctf laucin luna mach2 mbt1 mbt4 mbt12 mc-lab meltdown2 mercury metro mill new_energy
+nitro nucleus overdrive ow pandora pul1ctf ra recovery redemption regal reissen risk river_keep ruebli rust sacrifice shellshock2
+shipwreck siberia snapper_rocks spcr stadium stronghold subterra suburb surge tatooine tectonic tejen tempest tortuga triforts tubes turbulence
+twinforts unworld3 urban_c valhalla warlock wdcd xenon
+]
+
+// Single player maps
+spmaprot = [
+mpsp6a mpsp6b mpsp6c mpsp9a mpsp9b mpsp9c mpsp10 lost level9 skrsp1 crnsp1
+]
+
+maprotationreset
+{% for rotation in remod_config_maprotation %}
+maprotation "{{rotation.mode}}" {{rotation.maps}}
+{% endfor %}
+
+// Teamkill settings
+teamkillkickreset
+{% for tk in remod_config_teamkillkick %}
+teamkillkick "{{tk.mode}}" {{tk.count}} {{tk.minutes}}
+{% endfor %}
+
+
+// -------------------------------------
+// MODULES
+// -------------------------------------
+
+//******** Stats module ********
+// Show most frags/deaths/flags
+exec "scripts/modules/stats.cfg"
+
+
+//******** Modmap module ********
+// Spectate player with modified map
+
+// 1 - spectate player, 0 just show warnings
+modmap_spec = 1
+
+// Execute module
+//exec "scripts/modules/modmap.cfg"
+
+
+//******** Flagrun ********
+// Store fastest flagruns
+
+// detect cheaters who score flags too fast 
+// (if a player scores flag faster than $flagrun_minmillis milliseconds, he is assumed as a cheater)
+flagrun_minmillis = 3000
+
+// Show flagrun messages in the game (1 - show, 0 - don't show)
+flagrun_show_messages = 1	
+
+// Which database should we use for flagrun results. No value = no database use
+flagrun_db = "default"	
+
+// Execute module
+exec "scripts/modules/flagrun.cfg"
+
+
+//******** Syncauth module ********
+// TODO some descripion
+
+// local file with authkeys
+authfile "auth.cfg" 
+
+// set empty if you dont want load authkeys from database with #syncauth else set to "default", not recomended to use with sqlite
+auth_db = "default" 
+
+// Execute module
+exec "scripts/modules/syncauth.cfg"
+
+
+
+//******** Spy module ********
+// Collects IP addresses of players and allow you to see players with fake names
+// Define database to use. NOT RECOMMENED to use with sqlite since it could slow down the server
+// The "default" db is used by default, one can omit spy_db definition
+// spy_db = "default" 
+
+// Execute module
+{% if remod_config_spy == 1 %}
+exec "scripts/modules/spy.cfg"
+{% endif %}
+
+// -------------------------------------
+// COMMANDS
+// -------------------------------------
+
+// Commands should be loaded AFTER modules, since some commands may depend on modules
+
+// Commands in gameplay
+execdir "scripts/commands"
+
+// Commands for IRC bot
+execdir "scripts/irccommands"
+
+// Additional auth servers
+{% for server in remod_config_authservers %}
+addauthserver "{{server.domain}}" "{{server.hostname}}" {{server.port}} "{{server.privilege}}"
+{% endfor %}
+
+
+{% for item in remod_config_extra %}
+{{item}}
+{% endfor %}

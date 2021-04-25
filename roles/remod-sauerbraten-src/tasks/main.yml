@@ -1,0 +1,71 @@
+# - name: "Clean {{remod_build_root}}"
+#   file:
+#     path: "{{remod_build_root}}"
+#     state: absent
+- name: "Git clone {{remod_version}}"
+  git:
+    repo: "{{remod_git_repo}}"
+    dest: "{{remod_build_root}}"
+    version: "{{remod_version}}"
+    force: yes
+  tags:
+    - install
+- name: Build remod
+  make:
+    chdir: "{{remod_build_root}}/src"
+  tags:
+    - install
+- name: "Create directory structure"
+  file: 
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{remod_install_dir}}"
+    - "{{remod_install_dir}}/{{remod_demodir}}"
+  tags:
+    - install
+- name: Copy files
+  copy:
+    src: "{{remod_build_root}}/{{item}}"
+    dest: "{{remod_install_dir}}/{{item}}"
+    remote_src: yes
+  with_items:
+    - maps/
+    - scripts/
+    - GeoIP.dat
+    - GeoLite2-Country.mmdb
+    - remod64
+  tags:
+    - install
+- name: Install once
+  copy:
+    src: "{{remod_build_root}}/{{item}}"
+    dest: "{{remod_install_dir}}/{{item}}"
+    remote_src: yes
+    force: no
+  with_items:
+    - permbans.cfg
+    - remod_sqlite3.db
+  tags:
+    - install
+- name: Configs
+  template:
+    src: "{{item}}.j2"
+    dest: "{{remod_install_dir}}/{{item}}"
+  tags:
+    - install
+  with_items:
+    - auth.cfg
+    - server-init.cfg
+- name: Make remod bin excutable
+  file:
+    dest: "{{remod_install_dir}}/remod64"
+    mode: a+x
+  tags:
+    - install
+- name: Install systemd service file to server
+  template:
+    src: remod.service.j2
+    dest: /etc/systemd/system/remod.service
+  tags:
+    - install

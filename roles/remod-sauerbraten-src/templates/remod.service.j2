@@ -1,0 +1,10 @@
+[Unit]
+Description=Sauerbraten server mod
+After=network.target
+
+[Service]
+WorkingDirectory={{remod_install_dir}}
+ExecStart={{remod_bin}} -q{{remod_install_dir}}
+
+[Install]
+WantedBy=multi-user.target

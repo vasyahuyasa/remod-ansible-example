@@ -1,0 +1,7 @@
+sauerbraten_revision: r6499
+sauerbraten_svn_repo: svn://svn.code.sf.net/p/sauerbraten/code/
+sauerbraten_build_root: "/tmp/build/sauerbraten-{{sauerbraten_revision}}"
+sauerbraten_install_root: "/opt/sauerbraten-master"
+sauerbraten_bin: "{{sauerbraten_install_root}}/sauer_master"
+sauerbraten_config_port: 28787
+sauerbraten_config_users: []

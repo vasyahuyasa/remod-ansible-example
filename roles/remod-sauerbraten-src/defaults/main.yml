@@ -1,0 +1,49 @@
+remod_version: v1.4.0
+remod_git_repo: https://github.com/vasyahuyasa/remod-sauerbraten.git
+remod_build_root: "/tmp/build/remod-sauerbraten-{{remod_version}}"
+remod_install_dir: "/opt/remod"
+remod_logfile: "{{remod_install_dir}}/remod.log"
+remod_bin: "{{remod_install_dir}}/remod64"
+remod_pidfile: /run/remod.pid
+remod_demodir: "demos"
+remod_authkeys: []
+remod_config_serverident: "{{ inventory_hostname }}"
+remod_config_serverdesc: "{{ inventory_hostname }}"
+remod_config_servermotd: "Welcome to remod server https://github.com/vasyahuyasa/remod-sauerbraten"
+remod_config_maxclients: 24
+remod_config_serverbotlimit: 8
+remod_config_publicserver: 3
+remod_config_updatemaster: 1
+remod_config_serverport: 28785
+remod_config_adminpass:
+remod_config_masterpass:
+remod_config_serverauth: remod
+remod_config_maxdemos: 5
+remod_config_restrictpausegame: 1
+remod_config_restrictgamespeed: 1
+remod_config_lockmaprotation: 0
+remod_config_ctftkpenalty: 0
+remod_config_rconproto: 0
+remod_config_rconenable: 0
+remod_config_rconport: 27070
+remod_config_rconpass: atata
+remod_config_demodir: "{{remod_demodir}}"
+remod_config_persistteams: 1
+remod_config_overtime: 0
+remod_config_maprotation:
+  - mode: "*"
+    maps: "$ffamaps"
+  - mode: "?capture ?hold"
+    maps: "$capturemaps"
+  - mode: "?ctf ?protect ?collect"
+    maps: "$ctfmaps"
+remod_config_teamkillkick:
+  - mode: "*"
+    count: 7
+    minutes: 30
+  - mode: "?capture"
+    count: 10
+    minutes: 30
+remod_config_spy: 0
+remod_config_authservers: []
+remod_config_extra: []

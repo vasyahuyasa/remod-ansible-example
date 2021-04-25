@@ -1,0 +1,4 @@
+clearusers
+{% for user in sauerbraten_config_users %}
+adduser {{user.name}} {{user.pubkey}}
+{% endfor %}
